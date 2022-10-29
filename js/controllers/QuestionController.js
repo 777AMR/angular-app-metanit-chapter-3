@@ -4,10 +4,18 @@ questApp.controller('QuestionController',
         $scope.loaded = false;
 
         $scope.load = function () {
-            $http({method: 'GET', url: 'question.json'}).then(function success(response) {
-                $scope.question = response.data.question;
-                $scope.loaded = true;
-            });
+            var conf = {
+                timeout: 600 // 600 миллисекунд
+            };
+            $http.get('question.json', conf).then(function success(response) {
+                    $scope.question = response.data.question;
+                    $scope.loaded = true;
+                    console.log(response.config);
+                }, function error(response) {
+                    console.log("Возникла ошибка");
+                    console.log("код ответа: " + response.status);
+                }
+            );
         };
         $scope.voteUp = function (answer) {
             answer.rate++;
